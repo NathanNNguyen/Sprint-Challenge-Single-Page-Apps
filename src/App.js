@@ -3,19 +3,28 @@ import Header from "./components/Header.js";
 import CharacterList from './components/CharacterList';
 import WelcomePage from './components/WelcomePage';
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import styled from 'styled-components';
 
 export default function App() {
+
+  const UlStyling = styled.header`
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  `;
+
   return (
     <Router>
       <nav>
-        <ul>
+        <UlStyling>
           <li>
             <Link to="/">Home</Link>
           </li>
           <li>
             <Link to="/characters">Characters</Link>
           </li>
-        </ul>
+        </UlStyling>
       </nav>
       <Switch>
         <Route exact path='/'>
