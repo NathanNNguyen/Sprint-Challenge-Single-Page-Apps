@@ -7,9 +7,14 @@ import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 export default function App() {
   return (
     <main>
-          <Header />
-          <CharacterList />
-          <WelcomePage />
+      <Route exact path='/'>
+        <WelcomePage />
+      </Route>
+
+      <Route path='/characters'>
+        <Header />
+        <CharacterList />
+      </Route>
     </main>
   );
 }
