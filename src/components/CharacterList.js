@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from "react";
 import CharacterCard from './CharacterCard';
+import SearchForm from './SearchForm';
 import styled from 'styled-components';
 import axios from 'axios';
 
 export default function CharacterList() {
-  // TODO: Add useState to track data from useEffect
-  const [characters, setCharacters] = useState([]);
 
   const ListStyling = styled.section`
     display: flex;
@@ -14,23 +13,32 @@ export default function CharacterList() {
     flex-wrap: wrap;
   `;
 
+  const [characters, setCharacters] = useState([]);
+  const [searchTerms, setSearchTerms] = useState('')
+
+  const handleChange = event => {
+    setSearchTerms(event.target.value)
+  };
+
   useEffect(() => {
     axios.get(`https://rickandmortyapi.com/api/character/`)
       .then(res => {
-        setCharacters(res.data.results);
-        console.log(res.data.results);
+        const data = res.data.results.filter((character) => character.name.toLowerCase().includes(searchTerms.toLowerCase()));
+        setCharacters(data);
+        // console.log(res.data.results);
       })
       .catch(err => console.log(err));
-    // TODO: Add API Request here - must run in `useEffect`
-    //  Important: verify the 2nd `useEffect` parameter: the dependancies array!
-  }, []);
+  }, [searchTerms]);
   // console.log(characters);
 
   return (
-    <ListStyling className="character-list">
-      {characters.map((character, index) => {
-        return <CharacterCard key={index} name={character.name} img={character.image} gender={character.gender} species={character.species} />;
-      })}
-    </ListStyling>
+    <div>
+      <SearchForm characters={characters} searchTerms={searchTerms} setSearchTerms={setSearchTerms} handleChange={handleChange} />
+      <ListStyling className="character-list">
+        {characters.map((character, index) => {
+          return <CharacterCard key={index} name={character.name} img={character.image} gender={character.gender} species={character.species} />;
+        })}
+      </ListStyling>
+    </div>
   );
 }
